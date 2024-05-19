@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import Header from './Header'
+import Footer from "./Footer";
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -15,8 +17,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <ClerkProvider>
+
+      <html lang="en">
+
+        <body className={inter.className}>
+          <SignedOut>
+
+            <div className="bg-green-400 text-white font-semibold m-4 py-3 px-6 w-20 rounded-lg shadow-md hover:bg-green-500 transition duration-300 ease-in-out">
+              <SignInButton />
+            </div>
+          </SignedOut>
+          <SignedIn >
+            <div className="absolute top-4 left-4">
+              <UserButton />
+            </div>
+            <Header />
+          </SignedIn>
+
+          {children}
+          <Footer />
+        </body>
+
+      </html>
+    </ClerkProvider>
+
   );
 }
