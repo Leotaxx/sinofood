@@ -9,11 +9,11 @@ import Link from "next/link";
 export default function Header() {
 
     return (
-        <div className="flex flex-col justify-center items-center">
-            <div className="text-2xl font-bold mb-4">
+        <div className="flex flex-col justify-center items-center p-4 bg-gray-100 w-full">
+            <div className="text-2xl font-bold mb-4 text-center">
                 Sino Street Food - Cooking Instructions
             </div>
-            <div className="flex flex-row justify-evenly items-center space-x-10">
+            <div className="flex flex-col md:flex-row justify-evenly items-center space-y-4 md:space-y-0 md:space-x-10 w-full">
                 <Link href="/">
                     <Image
                         src={peking}
