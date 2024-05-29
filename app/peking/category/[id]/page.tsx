@@ -16,8 +16,14 @@ interface Recipe {
     instructions: string;
     extras: string;
 }
+interface CategoryProps {
+    params: {
+        id: string;
+    };
+}
 
-const Category: React.FC = ({ params }: { params: { id: string } }) => {
+const Category: React.FC<CategoryProps> = ({ params }) => {
+
 
     const id = params.id;
     console.log(id)
