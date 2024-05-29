@@ -14,7 +14,7 @@ export default function Header() {
                 Sino Street Food - Cooking Instructions
             </div>
             <div className="flex flex-col md:flex-row justify-evenly items-center space-y-4 md:space-y-0 md:space-x-10 w-full">
-                <Link href="/">
+                <Link href="/peking">
                     <Image
                         src={peking}
                         alt="Peking"
