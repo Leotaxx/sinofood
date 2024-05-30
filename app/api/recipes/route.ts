@@ -15,9 +15,9 @@ export const GET = async (request: Request) => {
 
   try {
     const recipes = await prisma.recipe.findMany({
-      where: {
-        categoryId: Number(categoryId),
-      },
+      // where: {
+      //   categoryId: Number(categoryId),
+      // },
     });
     return NextResponse.json(recipes);
   } catch (error) {
