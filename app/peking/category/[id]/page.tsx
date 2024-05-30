@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useState } from 'react';
 
 interface Recipe {
@@ -26,13 +25,14 @@ const Category: React.FC<CategoryProps> = ({ params }) => {
 
 
     const id = params.id;
-    console.log(id)
+
     const [recipes, setRecipes] = useState<Recipe[]>([]);
 
     useEffect(() => {
         if (id) {
             const fetchRecipes = async () => {
                 const res = await fetch(`/api/recipes?categoryId=${id}`);
+                console.log(res)
                 const data = await res.json();
                 setRecipes(data);
             };
