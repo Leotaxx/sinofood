@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+export const dynamic = 'force-dynamic'
+
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const categoryId = searchParams.get('categoryId');
