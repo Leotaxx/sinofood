@@ -7,7 +7,7 @@ async function main() {
 	await prisma.category.deleteMany();
 
 	// Read the Excel file
-	const workbook = xlsx.readFile("PEKING_Cooking_Instructions.xlsx"); // Replace with your file path
+	const workbook = xlsx.readFile("prisma/PEKING_Cooking_Instructions.xlsx"); // Replace with your file path
 	const sheetName = workbook.SheetNames[0];
 	const worksheet = workbook.Sheets[sheetName];
 	const jsonData = xlsx.utils.sheet_to_json(worksheet);
