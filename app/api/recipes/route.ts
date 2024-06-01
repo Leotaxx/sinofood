@@ -2,32 +2,32 @@ import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 
 declare global {
-  // Prevents TypeScript from complaining about the global prisma instance
   var prisma: PrismaClient | undefined;
 }
 
 const prisma = global.prisma || new PrismaClient();
+if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
 
-
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const categoryId = searchParams.get('categoryId');
 
-  if (!categoryId) {
-    const recipes=await prisma.recipe.findMany();
-    return NextResponse.json(recipes);
-  }
-
   try {
-    const recipes = await prisma.recipe.findMany({
-      where: {
-        categoryId: Number(categoryId),
-      },
-    });
+    let recipes;
+    if (!categoryId) {
+      recipes = await prisma.recipe.findMany();
+    } else {
+      recipes = await prisma.recipe.findMany({
+        where: {
+          categoryId: Number(categoryId),
+        },
+      });
+    }
     return NextResponse.json(recipes);
   } catch (error) {
+    console.error('Error fetching recipes:', error);
     return NextResponse.json({ error: 'Unable to fetch recipes' }, { status: 500 });
   }
-};
+}; 
