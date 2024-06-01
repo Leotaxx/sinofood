@@ -15,6 +15,7 @@ interface Recipe {
     instructions: string;
     extras: string;
 }
+
 interface CategoryProps {
     params: {
         id: string;
@@ -22,25 +23,36 @@ interface CategoryProps {
 }
 
 const Category: React.FC<CategoryProps> = ({ params }) => {
-
-
     const id = params.id;
 
     const [recipes, setRecipes] = useState<Recipe[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (id) {
             const fetchRecipes = async () => {
-                const res = await fetch(`/api/recipes?categoryId=${id}`);
-                console.log(res)
-                const data = await res.json();
-                setRecipes(data);
+                try {
+                    const res = await fetch(`/api/recipes?categoryId=${id}`);
+                    if (!res.ok) {
+                        throw new Error('Failed to fetch recipes');
+                    }
+                    const data = await res.json();
+                    if (!Array.isArray(data)) {
+                        throw new Error('Invalid data format');
+                    }
+                    setRecipes(data);
+                } catch (error: any) {
+                    setError(error.message);
+                }
             };
 
             fetchRecipes();
         }
     }, [id]);
-    console.log(recipes)
+
+    if (error) {
+        return <div className="container mx-auto px-4">Error: {error}</div>;
+    }
 
     return (
         <div className="container mx-auto px-4">
@@ -56,7 +68,6 @@ const Category: React.FC<CategoryProps> = ({ params }) => {
                         <th className="py-2 px-4 border-b">Extra Ingredients</th>
                         <th className="py-2 px-4 border-b">Packaging</th>
                         <th className="py-2 px-4 border-b">Notes</th>
-
                     </tr>
                 </thead>
                 <tbody>
@@ -70,7 +81,6 @@ const Category: React.FC<CategoryProps> = ({ params }) => {
                             <td className="py-2 px-4 border-b">{recipe.extraIngredients}</td>
                             <td className="py-2 px-4 border-b">{recipe.packaging}</td>
                             <td className="py-2 px-4 border-b">{recipe.notes}</td>
-
                         </tr>
                     ))}
                 </tbody>
