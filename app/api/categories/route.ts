@@ -12,7 +12,7 @@ if (!global.prisma) {
 prisma = global.prisma;
 export const GET = async () => {
   try {
-    const categories = await prisma.category.findMany();
+    const categories = await prisma.recipe.findMany();
     return NextResponse.json(categories);
   } catch (error) {
     return NextResponse.json({ error: 'Unable to fetch categories' }, { status: 500 });
