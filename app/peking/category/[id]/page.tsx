@@ -28,7 +28,7 @@ const Category: React.FC<CategoryProps> = ({ params }) => {
 
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+    const [selectedRecipeId, setSelectedRecipeId] = useState<number | null>(null);
 
     useEffect(() => {
         if (id) {
@@ -56,55 +56,54 @@ const Category: React.FC<CategoryProps> = ({ params }) => {
         return <div className="container mx-auto px-4">Error: {error}</div>;
     }
 
+    const renderRecipeTable = (recipe: Recipe) => (
+        <div className="overflow-x-auto mt-4">
+            <table className="min-w-full bg-white border border-gray-200">
+                <tbody>
+                    <tr className="hover:bg-gray-50">
+                        <td className="py-2 px-4 border-b flex items-center">
+                            <RecipeImage name={recipe.name} />
+                            <span className="ml-4">{recipe.name}</span>
+                        </td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                        <td className="py-2 px-4 border-b">
+                            <div>Portion Size: {recipe.portionSize}</div>
+                            <div>Frozen/Defrosted: {recipe.frozenDefrosted}</div>
+                            <div>Autofryer Minutes: {recipe.autofryerMinutes}</div>
+                        </td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                        <td className="py-2 px-4 border-b break-words">{recipe.extraIngredients}</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                        <td className="py-2 px-4 border-b">
+                            <div>Sauce: {recipe.sauce}</div>
+                            <div>Packaging: {recipe.packaging}</div>
+                            <div>Notes: {recipe.notes}</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    );
+
     return (
         <div className="container mx-auto px-4">
             <h1 className="text-3xl font-bold my-6 text-center">Recipes</h1>
             <div className="flex flex-wrap gap-4 justify-center mb-6">
                 {recipes.map((recipe) => (
-                    <button
-                        key={recipe.id}
-                        onClick={() => setSelectedRecipe(recipe)}
-                        className="bg-blue-500 text-white py-2 px-4 rounded w-full sm:w-auto text-center"
-                    >
-                        {recipe.name}
-                    </button>
+                    <div key={recipe.id} className="w-full sm:w-auto">
+                        <button
+                            onClick={() => setSelectedRecipeId(recipe.id)}
+                            className="bg-blue-500 text-white py-2 px-4 rounded w-full text-center"
+                        >
+                            {recipe.name}
+                        </button>
+                        {selectedRecipeId === recipe.id && renderRecipeTable(recipe)}
+                    </div>
                 ))}
             </div>
-            {selectedRecipe && (
-                <div>
-                    <h2 className="text-2xl font-bold my-4 text-center">{selectedRecipe.name}</h2>
-                    <div className="overflow-x-auto">
-                        <table className="min-w-full bg-white border border-gray-200">
-                            <thead>
-                                <tr className="bg-gray-100">
-                                    <th className="py-2 px-4 border-b">Name</th>
-                                    <th className="py-2 px-4 border-b">Portion Size</th>
-                                    <th className="py-2 px-4 border-b">Frozen/Defrosted</th>
-                                    <th className="py-2 px-4 border-b">Autofryer Minutes</th>
-                                    <th className="py-2 px-4 border-b">Sauce</th>
-                                    <th className="py-2 px-4 border-b">Extra Ingredients</th>
-                                    <th className="py-2 px-4 border-b">Packaging</th>
-                                    <th className="py-2 px-4 border-b">Notes</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr className="hover:bg-gray-50">
-                                    <td className="py-2 px-4 border-b">
-                                        <RecipeImage name={selectedRecipe.name} />
-                                    </td>
-                                    <td className="py-2 px-4 border-b">{selectedRecipe.portionSize}</td>
-                                    <td className="py-2 px-4 border-b">{selectedRecipe.frozenDefrosted}</td>
-                                    <td className="py-2 px-4 border-b">{selectedRecipe.autofryerMinutes}</td>
-                                    <td className="py-2 px-4 border-b">{selectedRecipe.sauce}</td>
-                                    <td className="py-2 px-4 border-b break-words">{selectedRecipe.extraIngredients}</td>
-                                    <td className="py-2 px-4 border-b">{selectedRecipe.packaging}</td>
-                                    <td className="py-2 px-4 border-b">{selectedRecipe.notes}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
