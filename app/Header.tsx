@@ -11,7 +11,7 @@ export default function Header() {
     return (
         <div className="flex flex-col justify-center items-center p-4 bg-gray-100 w-full">
             <div className="text-2xl font-bold mb-4 text-center">
-                Sino Street Food - Cooking Instructions
+                Sino Foods Cooking Instructions
             </div>
             <div className="flex flex-col md:flex-row justify-evenly items-center space-y-4 md:space-y-0 md:space-x-10 w-full">
                 <Link href="/peking">
@@ -42,13 +42,15 @@ export default function Header() {
                         priority
                     />
                 </Link>
-                <Image
-                    src={boba}
-                    alt="Boba"
-                    width={100}
-                    height={100}
-                    priority
-                />
+                <Link href="/boba">
+                    <Image
+                        src={boba}
+                        alt="Boba"
+                        width={100}
+                        height={100}
+                        priority
+                    />
+                </Link>
                 <Image
                     src={miiwa}
                     alt="Miiwa"

@@ -1,67 +1,55 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const xlsx = require("xlsx");
 
-async function main() {
-	// Read the Excel file
-	const workbook = xlsx.readFile("prisma/PEKING_Cooking_Instructions.xlsx"); // Replace with your file path
-	const sheetName = workbook.SheetNames[0];
-	const worksheet = workbook.Sheets[sheetName];
-	const jsonData = xlsx.utils.sheet_to_json(worksheet);
+// Function to adjust cooking time based on specific rules
+function adjustCookingTime(cookingTime, brand) {
+	if (brand === "k") {
+		switch (cookingTime) {
+			case "72:00:00":
+				return "00:03:00";
+			case "48:00:00":
+				return "00:02:00";
+			case "84:00:00":
+				return "00:03:30";
+			default:
+				return cookingTime;
+		}
+	}
+	return cookingTime;
+}
 
-	// Loop through the data and insert into the database
-	for (const row of jsonData) {
-		// Ensure category name is defined and not empty
-		if (!row.Category || !row.RecipeName) {
-			console.error("Category or RecipeName is missing in row:", row);
-			continue;
+// Function to update recipes in the database
+async function updateRecipes() {
+	try {
+		// Fetch all recipes from the database
+		const recipes = await prisma.recipe.findMany();
+
+		for (const recipe of recipes) {
+			// Check if the brand is 'k' and adjust the cooking time if needed
+			const adjustedCookingTime = adjustCookingTime(
+				recipe.autofryerMinutes,
+				recipe.brand
+			);
+
+			// If the cooking time was adjusted, update the recipe in the database
+			if (adjustedCookingTime !== recipe.autofryerMinutes) {
+				await prisma.recipe.update({
+					where: { id: recipe.id },
+					data: { autofryerMinutes: adjustedCookingTime },
+				});
+				console.log(
+					`Updated recipe ${recipe.id}: ${recipe.name} with new cooking time ${adjustedCookingTime}`
+				);
+			}
 		}
 
-		// Insert categories if not exists
-		const category = await prisma.category.upsert({
-			where: { name: row.Category },
-			update: {},
-			create: { name: row.Category },
-		});
-
-		// Insert recipes
-		await prisma.recipe.create({
-			data: {
-				name: row.RecipeName.trim(),
-				portionSize: String(row.PortionSize || "").trim(),
-				frozenDefrosted: String(row.FrozenDefrosted || "").trim(),
-				autofryerMinutes: convertExcelTime(row.AutofryerMinutes || "").trim(),
-				sauce: String(row.Sauce || "").trim(),
-				extraIngredients: String(row.ExtraIngredients || ""),
-				packaging: String(row.Packaging || "").trim(),
-				notes: String(row.Note || "").trim(),
-				category: { connect: { id: category.id } },
-				picname: String(row.picname || "").trim(),
-				brand: String("f"),
-			},
-		});
+		console.log("All relevant recipes have been updated.");
+	} catch (error) {
+		console.error("Error updating recipes:", error);
+	} finally {
+		await prisma.$disconnect();
 	}
 }
-function convertExcelTime(excelTime) {
-	if (!excelTime) return "";
-	const totalSeconds = parseFloat(excelTime) * 24 * 3600;
-	const hours = Math.floor(totalSeconds / 3600);
-	const minutes = Math.floor((totalSeconds % 3600) / 60);
-	const seconds = Math.floor(totalSeconds % 60);
-	return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
-		2,
-		"0"
-	)}:${String(seconds).padStart(2, "0")}`;
-}
 
-main()
-	.then(() => {
-		console.log("Seed data created");
-	})
-	.catch((e) => {
-		console.error(e);
-		process.exit(1);
-	})
-	.finally(async () => {
-		await prisma.$disconnect();
-	});
+// Call the function to update recipes
+updateRecipes();

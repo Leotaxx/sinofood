@@ -45,7 +45,7 @@ const Category: React.FC<CategoryProps> = ({ params }) => {
                     if (!Array.isArray(data)) {
                         throw new Error('Invalid data format');
                     }
-                    const filteredData = data.filter((recipe: Recipe) => recipe.brand === 'p');
+                    const filteredData = data.filter((recipe: Recipe) => recipe.brand === 'f');
                     setRecipes(filteredData);
                 } catch (error: any) {
                     setError(error.message);
