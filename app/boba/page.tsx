@@ -8,7 +8,7 @@ const PdfViewerPage = () => {
     const [selectedFile, setSelectedFile] = useState('');
 
     const fileUrlen = '/boba/BOBA BEAU Recipes.pdf';
-    const fileUrlcn = '/boba/BOBA BEAU 茶饮制作步骤.pdf';
+    const fileUrlcn = '/boba/BOBA BEAU 茶饮制作步骤中文.pdf';
 
     return (
         <div className="container mx-auto px-4 py-6">

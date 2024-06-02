@@ -22,14 +22,9 @@ export default function RootLayout({
       <html lang="en">
 
         <body className={inter.className}>
-          <SignedOut>
 
-            <div className="bg-green-400 text-white font-semibold m-4 py-3 px-6 w-20 rounded-lg shadow-md hover:bg-green-500 transition duration-300 ease-in-out">
-              <SignInButton />
-            </div>
-          </SignedOut>
           <SignedIn >
-            <div className="absolute top-4 left-4">
+            <div className="absolute top-12 left-4">
               <UserButton />
             </div>
             <Header />
