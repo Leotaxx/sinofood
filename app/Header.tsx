@@ -23,7 +23,7 @@ export default function Header() {
                         priority
                     />
                 </Link>
-                <Link href="/recipes/pizzamia">
+                <Link href="/pizzamia">
                     <Image
                         src={pizzaMia}
                         alt="Pizza Mia"
@@ -33,7 +33,7 @@ export default function Header() {
 
                     />
                 </Link>
-                <Link href="/recipes/koreanfood">
+                <Link href="/koreanfood">
                     <Image
                         src={koreanFood}
                         alt="Korean Food"

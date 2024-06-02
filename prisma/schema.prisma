@@ -25,6 +25,8 @@ model Recipe {
   packaging        String
   notes            String
   categoryId       Int
+  picname          String
+  brand            String?
   category         Category @relation(fields: [categoryId], references: [id])
 }
 

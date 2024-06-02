@@ -1,19 +1,44 @@
-// "use client"
-import React from 'react';
+'use client'
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-export default function Recipes() {
+interface Category {
+    id: number;
+    name: string;
+}
 
+const Categories: React.FC = () => {
+    // const [categories, setCategories] = useState<Category[]>([]);
+
+    // useEffect(() => {
+    //     const fetchCategories = async () => {
+    //         const res = await fetch('/api/categories');
+    //         const data = await res.json();
+    //         setCategories(data);
+    //     };
+
+    //     fetchCategories();
+    // }, []);
 
     return (
-        <div className="flex flex-col justify-center items-center">
-            <h2>This is the Korean food recipes page</h2>
-            <Link href="/recipes/koreanfood/starters" className="bg-green-400 text-white font-semibold m-4 py-3 px-6 rounded-lg shadow-md hover:bg-green-500 transition duration-300 ease-in-out">
-                Starter
-            </Link>
-            <Link href="/recipes/koreanfood/main" className="bg-green-400 text-white font-semibold m-4 py-3 px-6 rounded-lg shadow-md hover:bg-green-500 transition duration-300 ease-in-out">
-                Main Coures
-            </Link>
+        <div className="container mx-auto px-4 py-6">
+
+            <ul className="space-y-4">
+
+                <li key='1' className="bg-white shadow-md rounded-lg p-4  w-full text-center hover:bg-gray-100 transition duration-300">
+                    <Link href={`/koreanfood/category/1`} className="text-xl font-semibold text-blue-600  hover:text-blue-800">
+                        Starters
+                    </Link>
+                </li>
+                <li key="2" className="bg-white shadow-md rounded-lg p-4  w-full text-center hover:bg-gray-100 transition duration-300">
+                    <Link href={`/koreanfood/category/2`} className="text-xl font-semibold text-blue-600  hover:text-blue-800">
+                        Main Course
+                    </Link>
+                </li>
+
+            </ul>
         </div>
     );
-}
+};
+
+export default Categories;

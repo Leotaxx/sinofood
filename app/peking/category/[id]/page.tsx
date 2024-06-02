@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
+
 interface Recipe {
     id: number;
     name: string;
@@ -15,6 +16,8 @@ interface Recipe {
     ingredients: string;
     instructions: string;
     extras: string;
+    picname: string;
+    brand: string;
 }
 
 interface CategoryProps {
@@ -42,7 +45,8 @@ const Category: React.FC<CategoryProps> = ({ params }) => {
                     if (!Array.isArray(data)) {
                         throw new Error('Invalid data format');
                     }
-                    setRecipes(data);
+                    const filteredData = data.filter((recipe: Recipe) => recipe.brand === 'p');
+                    setRecipes(filteredData);
                 } catch (error: any) {
                     setError(error.message);
                 }
@@ -62,25 +66,28 @@ const Category: React.FC<CategoryProps> = ({ params }) => {
                 <tbody>
                     <tr className="hover:bg-gray-50">
                         <td className="py-2 px-4 border-b flex items-center">
-                            <RecipeImage name={recipe.name} />
-                            <span className="ml-4">{recipe.name}</span>
+                            <RecipeImage name={recipe.picname} />
+
+
                         </td>
                     </tr>
                     <tr className="hover:bg-gray-50">
                         <td className="py-2 px-4 border-b">
-                            <div>Portion Size: {recipe.portionSize}</div>
-                            <div>Frozen/Defrosted: {recipe.frozenDefrosted}</div>
-                            <div>Autofryer Minutes: {recipe.autofryerMinutes}</div>
+                            <div>Portion Size/分量: {recipe.portionSize}</div>
+                            <div>Frozen冷冻/Defrosted解冻: {recipe.frozenDefrosted}</div>
+                            <div>Autofryer Minutes/制作或油炸时间: {recipe.autofryerMinutes}</div>
                         </td>
                     </tr>
                     <tr className="hover:bg-gray-50">
-                        <td className="py-2 px-4 border-b break-words">{recipe.extraIngredients}</td>
+                        <td className="py-2 px-4 border-b break-words">
+                            Extra Ingredients/额外食材：{recipe.extraIngredients ? recipe.extraIngredients : '无'}
+                        </td>
                     </tr>
                     <tr className="hover:bg-gray-50">
                         <td className="py-2 px-4 border-b">
-                            <div>Sauce: {recipe.sauce}</div>
-                            <div>Packaging: {recipe.packaging}</div>
-                            <div>Notes: {recipe.notes}</div>
+                            <div>Sauce/酱汁: {recipe.sauce}</div>
+                            <div>Packaging/包装: {recipe.packaging}</div>
+                            <div>Notes/备注: {recipe.notes ? recipe.notes : "无"}</div>
                         </td>
                     </tr>
                 </tbody>
@@ -90,7 +97,10 @@ const Category: React.FC<CategoryProps> = ({ params }) => {
 
     return (
         <div className="container mx-auto px-4">
-            <h1 className="text-3xl font-bold my-6 text-center">Recipes</h1>
+            {/* <Link href={`/peking/category`} className="text-xl font-semibold text-blue-600 hover:text-blue-800">
+                Back to category
+            </Link> */}
+            <h1 className="text-3xl font-bold my-6 text-center">Peking Recipes</h1>
             <div className="flex flex-wrap gap-4 justify-center mb-6">
                 {recipes.map((recipe) => (
                     <div key={recipe.id} className="w-full sm:w-auto">
@@ -127,7 +137,8 @@ const RecipeImage: React.FC<RecipeImageProps> = ({ name }) => {
                 className="object-cover"
                 onError={() => setImgError(true)}
             />
-            <span className="text-center">{name}</span>
+
+
         </div>
     );
 };

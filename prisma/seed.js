@@ -3,9 +3,6 @@ const prisma = new PrismaClient();
 const xlsx = require("xlsx");
 
 async function main() {
-	await prisma.recipe.deleteMany();
-	await prisma.category.deleteMany();
-
 	// Read the Excel file
 	const workbook = xlsx.readFile("prisma/PEKING_Cooking_Instructions.xlsx"); // Replace with your file path
 	const sheetName = workbook.SheetNames[0];
@@ -39,6 +36,8 @@ async function main() {
 				packaging: String(row.Packaging || "").trim(),
 				notes: String(row.Note || "").trim(),
 				category: { connect: { id: category.id } },
+				picname: String(row.picname || "").trim(),
+				brand: String("f"),
 			},
 		});
 	}
