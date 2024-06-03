@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 
-const PdfViewer = dynamic(() => import('../PdfViewer'), { ssr: false });
+const PdfViewer = dynamic(() => import('../../components/PdfViewer'), { ssr: false });
 
 const PdfViewerPage = () => {
     const [selectedFile, setSelectedFile] = useState('');
