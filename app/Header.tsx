@@ -10,7 +10,7 @@ import Link from "next/link";
 export default function Header() {
     const scrollDownOneScreen = () => {
         window.scrollBy({
-            top: window.innerHeight,
+            top: window.innerHeight / 2,
             behavior: "smooth"
         });
     };
