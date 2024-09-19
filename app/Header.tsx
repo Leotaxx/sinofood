@@ -20,7 +20,9 @@ export default function Header() {
 
             <div className="text-2xl font-bold mb-4 text-center">
                 Sino Foods Cooking Instructions
+                <p className="text-red-700 text-xs">即日起禁止使用锡盒和塑料盒等违规包装，违规者将线上罚款500欧每次，感谢大家理解与配合。</p>
             </div>
+
             <div className="flex flex-col md:flex-row justify-evenly items-center space-y-4 md:space-y-0 md:space-x-10 w-full">
                 <Link href="/peking" onClick={scrollDownOneScreen} className="hover:filter-drop-shadow">
                     <Image
