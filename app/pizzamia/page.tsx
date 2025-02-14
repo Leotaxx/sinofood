@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 const VerticalPizzaMenu: React.FC = () => {
     const pizzas = [
+        { src: '/mia/new.png', alt: 'Mia Spicy' },
         { src: '/mia/1.png', alt: 'Mia Special' },
         { src: '/mia/2.png', alt: 'Margherita' },
         { src: '/mia/3.png', alt: 'Pepperoni' },
